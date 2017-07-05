@@ -133,6 +133,10 @@ extension SwiftyStoreKit {
     fileprivate static let sharedInstance = SwiftyStoreKit()
 
     // MARK: Public methods - Purchases
+
+	public class var unhandledTransactions: [Purchase] {
+		return sharedInstance.paymentQueueController.unhandledTransactions
+	}
     
     /**
      * Return NO if this device is not able or allowed to make payments
