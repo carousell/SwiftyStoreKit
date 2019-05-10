@@ -46,29 +46,26 @@ public class SwiftyStoreKit {
         return productsInfoController.retrieveProductsInfo(productIds, completion: completion)
     }
     
-    fileprivate func purchaseProduct(_ productId: String, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", completion: @escaping ( PurchaseResult) -> Void) {
+    fileprivate func purchaseProduct(_ productId: String, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping ( PurchaseResult) -> Void) {
 
         retrieveProductsInfo(Set([productId])) { result -> Void in
             if let product = result.retrievedProducts.first {
-                self.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, completion: completion)
+                self.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, completion: completion)
             } else if let error = result.error {
                 completion(.error(error: SKError(_nsError: error as NSError)))
             } else if let invalidProductId = result.invalidProductIDs.first {
                 let userInfo = [ NSLocalizedDescriptionKey: "Invalid product id: \(invalidProductId)" ]
                 let error = NSError(domain: SKErrorDomain, code: SKError.paymentInvalid.rawValue, userInfo: userInfo)
                 completion(.error(error: SKError(_nsError: error)))
+            } else {
+                let error = NSError(domain: SKErrorDomain, code: SKError.unknown.rawValue, userInfo: nil)
+                completion(.error(error: SKError(_nsError: error)))
             }
         }
     }
 
-    fileprivate func purchase(product: SKProduct, quantity: Int, atomically: Bool, applicationUsername: String = "", completion: @escaping (PurchaseResult) -> Void) {
-        guard SwiftyStoreKit.canMakePayments else {
-            let error = NSError(domain: SKErrorDomain, code: SKError.paymentNotAllowed.rawValue, userInfo: nil)
-            completion(.error(error: SKError(_nsError: error)))
-            return
-        }
-        
-        paymentQueueController.startPayment(Payment(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername) { result in
+    fileprivate func purchase(product: SKProduct, quantity: Int, atomically: Bool, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping (PurchaseResult) -> Void) {
+        paymentQueueController.startPayment(Payment(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox) { result in
             
             completion(self.processPurchaseResult(result))
         })
@@ -167,9 +164,9 @@ extension SwiftyStoreKit {
      *  - Parameter applicationUsername: an opaque identifier for the user’s account on your system
      *  - Parameter completion: handler for result
      */
-    public class func purchaseProduct(_ productId: String, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", completion: @escaping (PurchaseResult) -> Void) {
+    public class func purchaseProduct(_ productId: String, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping (PurchaseResult) -> Void) {
 
-        sharedInstance.purchaseProduct(productId, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, completion: completion)
+        sharedInstance.purchaseProduct(productId, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, completion: completion)
     }
     
     /**
@@ -180,9 +177,9 @@ extension SwiftyStoreKit {
      *  - Parameter applicationUsername: an opaque identifier for the user’s account on your system
      *  - Parameter completion: handler for result
      */
-    public class func purchaseProduct(_ product: SKProduct, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", completion: @escaping ( PurchaseResult) -> Void) {
+    public class func purchaseProduct(_ product: SKProduct, quantity: Int = 1, atomically: Bool = true, applicationUsername: String = "", simulatesAskToBuyInSandbox: Bool = false, completion: @escaping ( PurchaseResult) -> Void) {
         
-        sharedInstance.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, completion: completion)
+        sharedInstance.purchase(product: product, quantity: quantity, atomically: atomically, applicationUsername: applicationUsername, simulatesAskToBuyInSandbox: simulatesAskToBuyInSandbox, completion: completion)
     }
 
     /**
@@ -223,6 +220,28 @@ extension SwiftyStoreKit {
         didSet {
             sharedInstance.paymentQueueController.shouldAddStorePaymentHandler = shouldAddStorePaymentHandler
         }
+    }
+    
+    /**
+     * Register a handler for paymentQueue(_:updatedDownloads:)
+     */
+    public static var updatedDownloadsHandler: UpdatedDownloadsHandler? {
+        didSet {
+            sharedInstance.paymentQueueController.updatedDownloadsHandler = updatedDownloadsHandler
+        }
+    }
+    
+    public class func start(_ downloads: [SKDownload]) {
+        sharedInstance.paymentQueueController.start(downloads)
+    }
+    public class func pause(_ downloads: [SKDownload]) {
+        sharedInstance.paymentQueueController.pause(downloads)
+    }
+    public class func resume(_ downloads: [SKDownload]) {
+        sharedInstance.paymentQueueController.resume(downloads)
+    }
+    public class func cancel(_ downloads: [SKDownload]) {
+        sharedInstance.paymentQueueController.cancel(downloads)
     }
 }
 

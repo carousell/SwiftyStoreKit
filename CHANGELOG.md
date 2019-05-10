@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.0](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.15.0) Update project to Swift 5, Xcode 10.2
+
+* Update project to Swift 5 ([#457](https://github.com/bizz84/SwiftyStoreKit/pull/457)), related issue: [#456](https://github.com/bizz84/SwiftyStoreKit/issues/456)
+* Add basic SwiftPM manifest file ([#460](https://github.com/bizz84/SwiftyStoreKit/pull/460))
+
+## [0.14.2](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.14.2) Remove `canMakePayments` check on purchase method
+
+* Remove `canMakePayments` check on purchase method ([#434](https://github.com/bizz84/SwiftyStoreKit/pull/434))
+
+## [0.14.1](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.14.1) Add missing `else` condition in `SwiftyStoreKit.purchaseProduct`
+
+* Add missing `else` condition in `SwiftyStoreKit.purchaseProduct` ([#426](https://github.com/bizz84/SwiftyStoreKit/pull/426))
+
+## [0.14.0](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.14.0) Add `isInIntroOfferPeriod` property, update project to Swift 4.2, Xcode 10
+
+* Added new property `isInIntroOfferPeriod` to ReceiptItem ([#404](https://github.com/bizz84/SwiftyStoreKit/pull/404), [#409](https://github.com/bizz84/SwiftyStoreKit/pull/409))
+* Add Swift 4.2 Support ([#408](https://github.com/bizz84/SwiftyStoreKit/pull/408)), update project to Xcode 10 ([#410](https://github.com/bizz84/SwiftyStoreKit/pull/410))
+
+## [0.13.3](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.13.3) Fix macOS compile error on Xcode 10.0 beta (10L176w)
+
+* Fix macOS compile error on Xcode 10.0 beta (10L176w) ([#381](https://github.com/bizz84/SwiftyStoreKit/pull/381), see [#380](https://github.com/bizz84/SwiftyStoreKit/issues/380))
+
+## [0.13.2](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.13.2) Swift 4.1 / Xcode 9.3 Support
+
+* Swift 4.1 / Xcode 9.3 Support ([#360](https://github.com/bizz84/SwiftyStoreKit/pull/360))
+
+## [0.13.1](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.13.1) Add support Ask To Buy
+
+* Add a wrapper for `simulatesAskToBuyInSandbox` ([#349](https://github.com/bizz84/SwiftyStoreKit/pull/349))
+
+## [0.13.0](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.13.0) Add support for downloading content hosted with Apple
+
+* Add support for downloading content hosted with Apple ([#343](https://github.com/bizz84/SwiftyStoreKit/pull/343), related issue: [#128](https://github.com/bizz84/SwiftyStoreKit/issues/128))
+* Add table of contents to README ([#346](https://github.com/bizz84/SwiftyStoreKit/pull/346))
+
+## [0.12.1](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.12.1) Assert that `completeTransactions` was called when the app launches.
+
+* Assert that `completeTransactions()` was called when the app launches ([#337](https://github.com/bizz84/SwiftyStoreKit/pull/337), related issue: [#287](https://github.com/bizz84/SwiftyStoreKit/issues/287))
+
 ## [0.12.0](https://github.com/bizz84/SwiftyStoreKit/releases/tag/0.12.0) Add `verifySubscriptions` method for subscription groups 
 
 * Add `verifySubscriptions` method to check all subscriptions in a group at once ([#333](https://github.com/bizz84/SwiftyStoreKit/pull/333), related issue: [#194](https://github.com/bizz84/SwiftyStoreKit/issues/194))

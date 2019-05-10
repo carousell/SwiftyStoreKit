@@ -11,6 +11,8 @@ import StoreKit
 
 class PaymentQueueSpy: PaymentQueue {
 
+    var transactions: [SKPaymentTransaction] = []
+
     weak var observer: SKPaymentTransactionObserver?
 
     var payments: [SKPayment] = []
@@ -43,5 +45,21 @@ class PaymentQueueSpy: PaymentQueue {
     func finishTransaction(_ transaction: SKPaymentTransaction) {
 
         finishTransactionCalledCount += 1
+    }
+    
+    func start(_ downloads: [SKDownload]) {
+        
+    }
+    
+    func pause(_ downloads: [SKDownload]) {
+        
+    }
+    
+    func resume(_ downloads: [SKDownload]) {
+        
+    }
+    
+    func cancel(_ downloads: [SKDownload]) {
+        
     }
 }
