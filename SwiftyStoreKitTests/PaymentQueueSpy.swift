@@ -11,6 +11,8 @@ import StoreKit
 
 class PaymentQueueSpy: PaymentQueue {
 
+    var transactions: [SKPaymentTransaction] = []
+
     weak var observer: SKPaymentTransactionObserver?
 
     var payments: [SKPayment] = []
